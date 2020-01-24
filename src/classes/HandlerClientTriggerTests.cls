@@ -1,5 +1,5 @@
 @IsTest
-private class ClientHendlerTests {
+private class HandlerClientTriggerTests {
     @isTest static void testInsert() {
         integer count = 10;
 
