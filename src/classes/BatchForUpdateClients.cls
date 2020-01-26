@@ -12,8 +12,9 @@ global class BatchForUpdateClients implements
     }
 
     global void execute(Database.BatchableContext bc, List<Client__c> scope) {
-        List<Client__c> clients = HandlerClientTrigger.countChild(scope);
-        for (Client__c client : clients) {
+
+        for (Client__c client : scope) {
+            client.Count_Credits__c = client.Credits__r.size();
             client.Description__c = 'Count of credits: ' +
                     client.Count_Credits__c +
                     '. Last general check: ' +

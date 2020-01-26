@@ -3,7 +3,7 @@
  */
 
 trigger CreditTrigger on Credit__c (after insert, after delete, after update ) {
-
+//Update client information
     if (Trigger.isInsert || Trigger.isUpdate) {
         HandlerCreditTrigger.handleQueryCredit(Trigger.new);
     } else if (Trigger.isDelete) {
