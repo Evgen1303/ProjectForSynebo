@@ -46,13 +46,13 @@ public with sharing class AnimalsCallouts {
         System.debug(response.getBody());
     }
 
-    public static HttpResponse makePostCallout() {
+    public static HttpResponse makePostCallout(String name) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
         request.setMethod('POST');
         request.setHeader('Content-Type', 'application/json;charset=UTF-8');
-        request.setBody('{"name":"mighty moose"}');
+        request.setBody('{"name":"'+name+'"}');
         HttpResponse response = http.send(request);
         // Parse the JSON response
         if (response.getStatusCode() != 201) {
