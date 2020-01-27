@@ -3,11 +3,11 @@
  */
 
 public with sharing class AnimalsCallouts {
-   @future(callout=true)
+    //  @future(callout=true)
     public static void makeGetCallout(Integer idAnimal) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals/'+idAnimal);
+        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals/' + idAnimal);
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         System.debug(response.getBody());
@@ -20,19 +20,49 @@ public with sharing class AnimalsCallouts {
             animal.Eats__c = animalDTO.animal.eats;
             animal.Says__c = animalDTO.animal.says;
 
-            List<Animal__c> animals = [SELECT IdAnimal__c From Animal__c where IdAnimal__c =:animalDTO.animal.id];
-
-            if(animals.isEmpty()){
-                insert animal;
-                System.debug('Record added: '+ animal);
+            List<Animal__c> animals = [SELECT IdAnimal__c From Animal__c where IdAnimal__c = :animalDTO.animal.id];
+            if (animalDTO.animal.id != 0) {
+                if (animals.isEmpty()) {
+                    insert animal;
+                    System.debug('Record added: ' + animal);
+                } else {
+                    System.debug('Record already exists');
+                }
+            } else {
+                System.debug('Record id = 0');
             }
-            else{
-                System.debug('Record already exists');
-            }
-        }
-        else {
-            System.debug('Error');
+        } else {
+            System.debug('Error ' + response.getStatus());
         }
 
     }
+    @future(callout=true)
+    public static void makeGetCalloutInMyAPI(Integer idAnimal) {
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('http://evgeniyapi-developer-edition.eu29.force.com/services/apexrest/Animals/1');
+        request.setMethod('GET');
+        HttpResponse response = http.send(request);
+        System.debug(response.getBody());
+    }
+
+    public static HttpResponse makePostCallout() {
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://th-apex-http-callout.herokuapp.com/animals');
+        request.setMethod('POST');
+        request.setHeader('Content-Type', 'application/json;charset=UTF-8');
+        request.setBody('{"name":"mighty moose"}');
+        HttpResponse response = http.send(request);
+        // Parse the JSON response
+        if (response.getStatusCode() != 201) {
+            System.debug('The status code returned was not expected: ' +
+                    response.getStatusCode() + ' ' + response.getStatus());
+        } else {
+            System.debug(response.getBody());
+        }
+        return response;
+    }
+
+
 }

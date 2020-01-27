@@ -4,6 +4,7 @@
 
 @IsTest
 private class AnimalsCalloutsTests {
+
     static testMethod void testSuccesfulRequest() {
         StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
         mock.setStaticResource('GetAnimalResource');
