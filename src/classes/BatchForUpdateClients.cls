@@ -6,15 +6,20 @@ global class BatchForUpdateClients implements
 
     global Database.QueryLocator start(Database.BatchableContext bc) {
         return Database.getQueryLocator(
-                'SELECT ID,Name,Count_Credits__c,' +
-                        '(SELECT id from Credits__r) ' +
-                        'From Client__c');
+                'SELECT ID, Name, Count_Credits__c, Description__c From Client__c');
     }
 
     global void execute(Database.BatchableContext bc, List<Client__c> scope) {
-
+        List<Credit__c> credits = [SELECT Id, Client__c FROM  Credit__c WHERE Client__c in :scope];
         for (Client__c client : scope) {
-            client.Count_Credits__c = client.Credits__r.size();
+            Integer count_child = 0;
+            for (Credit__c credit: credits){
+                if(credit.Client__c == client.Id){
+                    count_child++;
+                }
+            }
+
+            client.Count_Credits__c = count_child;
             client.Description__c = 'Count of credits: ' +
                     client.Count_Credits__c +
                     '. Last general check: ' +
@@ -25,7 +30,6 @@ global class BatchForUpdateClients implements
             recordsProcessed = recordsProcessed + 1;
         }
         update scope;
-
     }
 
     global void finish(Database.BatchableContext bc) {
