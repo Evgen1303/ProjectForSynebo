@@ -18,10 +18,10 @@ global with sharing class AnimalsManagerService {
         result = queryAnimals(animalId);
 
         if (result.isEmpty()) {
+            //add new record in my db
             AnimalsCallouts.makeGetCallout(Integer.valueOf(animalId));
             result = queryAnimals(animalId);
             if (!result.isEmpty()) {
-
                 return result.get(0);
             } else {
                 RestContext.response.statusCode = 404;

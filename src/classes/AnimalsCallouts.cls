@@ -36,14 +36,15 @@ public with sharing class AnimalsCallouts {
         }
 
     }
-    @future(callout=true)
-    public static void makeGetCalloutInMyAPI(Integer idAnimal) {
+   // @future(callout=true)
+    public static String makeGetCalloutInMyAPI(Integer idAnimal) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setEndpoint('http://evgeniyapi-developer-edition.eu29.force.com/services/apexrest/Animals/1');
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         System.debug(response.getBody());
+        return  response.getBody();
     }
 
     public static HttpResponse makePostCallout(String name) {
