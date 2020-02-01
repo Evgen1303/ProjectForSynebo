@@ -1,0 +1,21 @@
+<aura:component controller="FormTestController">
+      
+    <aura:attribute type="Account[]" name="acctList"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="accname" type="String"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.myAction}"/>
+      
+        <header >
+            <h3 >Accounts</h3>
+        </header>
+    <div class="row">
+        <lightning:input aura:id="myfield" name="inputtest" label="Input Account name"  value="{!v.accname}"/>
+    </div>
+    <lightning:button onclick="{!c.myAction}" label="Update"/>
+    
+    <lightning:datatable data="{! v.acctList }"
+                         columns="{! v.mycolumns }"
+                         keyField="id"
+                         hideCheckboxColumn="true"/>
+</aura:component>
